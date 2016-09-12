@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/schema/validate/rule.xsd"
+	ns="abc">
+	
+	<def id="IntegerChecker">
+		<rule name="最大值" value="10000" />
+	</def>
+	
+	<def id="StringChecker">
+		<rule name="最大长度" value="8" />
+	</def>
+	
+	<def id="mobile">
+		<rule name="匹配">
+			<![CDATA[ \d+ ]]>
+		</rule>
+	</def>
+
+	<ruleGroup id="userInfoChecker" desc="获取用户列表控制器">
+		<item name="age" type="int" require="true" ref="IntegerChecker" desc="用户姓名">
+			<rule name="最小值" value="18" />
+		</item>
+		<item name="age1" type="int" require="false" defaultValue="12" />
+		<item name="name" type="string" ref="StringChecker" message="姓名不合法" />
+	</ruleGroup>
+
+</validate>

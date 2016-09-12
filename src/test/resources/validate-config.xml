@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/schema/validate/rule.xsd">
+	
+	<config-property name="errorCode" value="-2" />
+	<config-property name="errorMessage" value="数据验证错误" />
+	<config-property name="nsSeparator" value="." />
+	<config-property name="throwException" value="true" />
+	
+	<!-- <checker id="" class="" /> -->
+	
+	<plugin resource="validate-rule-1.xml" />
+	
+</validate>

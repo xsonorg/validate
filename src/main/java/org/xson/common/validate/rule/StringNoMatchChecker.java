@@ -1,0 +1,23 @@
+package org.xson.common.validate.rule;
+
+import java.util.regex.Pattern;
+
+import org.xson.common.object.XCO;
+import org.xson.common.validate.Checker;
+
+/**
+ * 字符串不匹配校验校验
+ */
+public class StringNoMatchChecker implements Checker {
+
+	@Override
+	public boolean check(XCO xco, String fieldName, Object value) {
+		Pattern pattern = (Pattern) value;
+		String val = xco.getStringValue(fieldName);
+		return !pattern.matcher(val).matches();
+	}
+
+	public static Object parseValue(String value) {
+		return Pattern.compile(value.trim());
+	}
+}
