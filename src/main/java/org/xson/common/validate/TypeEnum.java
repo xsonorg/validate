@@ -1,29 +1,29 @@
 package org.xson.common.validate;
 
 public enum TypeEnum {
-	//
+	// 1.
 	INTEGER("int"),
-	//
+	// 2.
 	LONG("long"),
-	//
+	// 3.
 	FLOAT("float"),
-	//
+	// 4.
 	DOUBLE("double"),
-	//
+	// 5.
 	STRING("string"),
-	//
+	// 6.
 	DATE("date"),
-	//
+	// 7.
 	TIME("time"),
-	//
+	// 9.
 	DATETIME("dateTime"),
-	//
+	// 10.
 	BIGINTEGER("bigInteger"),
-	//
+	// 11.
 	BIGDECIMAL("bigDecimal"),
-	//
+	// 12.
 	ARRAY("array"),
-	//
+	// 13.
 	COLLECTION("collection");
 
 	private String	value;

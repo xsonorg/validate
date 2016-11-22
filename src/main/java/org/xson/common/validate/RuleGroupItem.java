@@ -2,19 +2,23 @@ package org.xson.common.validate;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.xson.common.object.XCO;
 
 public class RuleGroupItem {
 
-	private String		fieldName;
-	private TypeEnum	type;
-	private List<Rule>	rules;
-	private boolean		require;
-	private String		message;
-	private Object		defaultValue;
-	private String		desc;
+	private static Logger	logger	= Logger.getLogger(RuleGroupItem.class);
+
+	private String			fieldName;
+	private TypeEnum		type;
+	private List<Rule>		rules;
+	private boolean			require;
+	private String			message;
+	private Object			defaultValue;
+	private String			desc;
 
 	public RuleGroupItem(String fieldName, TypeEnum type, List<Rule> rules, boolean require, String message, String defaultValue, String desc) {
 		this.fieldName = fieldName;
@@ -28,30 +32,96 @@ public class RuleGroupItem {
 
 	public boolean check(XCO xco) {
 		boolean result = false;
-		Object value = xco.getObjectValue(fieldName);
-		// 需要做非必填的判断
-		if (null == value) {
-			if (require) {
-				result = false;
+		try {
+			Object value = xco.getObjectValue(fieldName);
+			// 需要做非必填的判断
+			if (null == value) {
+				if (require) {
+					result = false;
+				} else {
+					if (null != defaultValue) {
+						setDefaultValue(xco);
+					}
+					return true;
+				}
 			} else {
-				if (null != defaultValue) {
-					setDefaultValue(xco);
+				if (rules.size() > 0) {
+					for (Rule rule : rules) {
+						Checker checker = rule.findChecker(type);
+						if (null == checker) {
+							throw new XCOValidateException("Field type and validation rules do not match: " + fieldName);
+						}
+						result = checker.check(xco, this.fieldName, rule.getValue());
+						if (!result) {
+							break;
+						}
+					}
+				} else {
+					// 在没有规则的情况, 支持类型的验证
+					result = checkValueType(value);
 				}
-				return true;
 			}
-		} else {
-			for (Rule rule : rules) {
-				Checker checker = rule.findChecker(type);
-				result = checker.check(xco, this.fieldName, rule.getValue());
-				if (!result) {
-					break;
-				}
-			}
+		} catch (Throwable e) {
+			logger.error(e);
 		}
-		if (!result && Container.onValidateFailedThrowException) {
-			throw new XCOValidateException(Container.errorCode, (null != this.message) ? this.message : Container.errorMessage);
+
+		if (!result && Container.onValidateFailedThrowException && null != this.message) {
+			throw new XCOValidateException(Container.errorCode, this.message);
 		}
 		return result;
+	}
+
+	private boolean checkValueType(Object value) {
+		if (TypeEnum.INTEGER == type) {
+			if (Integer.class == value.getClass()) {
+				return true;
+			}
+		} else if (TypeEnum.LONG == type) {
+			if (Long.class == value.getClass()) {
+				return true;
+			}
+		} else if (TypeEnum.FLOAT == type) {
+			if (Float.class == value.getClass()) {
+				return true;
+			}
+		} else if (TypeEnum.DOUBLE == type) {
+			if (Double.class == value.getClass()) {
+				return true;
+			}
+		} else if (TypeEnum.STRING == type) {
+			if (String.class == value.getClass()) {
+				return true;
+			}
+		} else if (TypeEnum.DATE == type) {
+			if (java.sql.Date.class == value.getClass()) {
+				return true;
+			}
+		} else if (TypeEnum.TIME == type) {
+			if (java.sql.Time.class == value.getClass()) {
+				return true;
+			}
+		} else if (TypeEnum.DATETIME == type) {
+			if (java.util.Date.class == value.getClass()) {
+				return true;
+			}
+		} else if (TypeEnum.BIGINTEGER == type) {
+			if (BigInteger.class == value.getClass()) {
+				return true;
+			}
+		} else if (TypeEnum.BIGDECIMAL == type) {
+			if (BigDecimal.class == value.getClass()) {
+				return true;
+			}
+		} else if (TypeEnum.ARRAY == type) {
+			if (value.getClass().isArray()) {
+				return true;
+			}
+		} else if (TypeEnum.COLLECTION == type) {
+			if (value instanceof Collection) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void parseDefaultValue(String value) {

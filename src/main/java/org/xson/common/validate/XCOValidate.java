@@ -19,7 +19,7 @@ public class XCOValidate {
 	public static boolean validate(String ruleGroupId, XCO xco) {
 		RuleGroup group = Container.ruleGroupsMap.get(ruleGroupId);
 		if (group == null) {
-			throw new RuntimeException("校验模板不存在: " + ruleGroupId);
+			throw new XCOValidateException("validation template does not exist: " + ruleGroupId);
 		}
 		return group.check(xco);
 	}

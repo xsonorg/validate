@@ -8,12 +8,14 @@ public class RuleGroup {
 
 	private String				id;
 	private List<RuleGroupItem>	items;
-	private String				desc;	// 描述
+	private String				desc;		// 描述
+	private String				message;	// 错误信息
 
-	public RuleGroup(String id, List<RuleGroupItem> items, String desc) {
+	public RuleGroup(String id, List<RuleGroupItem> items, String desc, String message) {
 		this.id = id;
 		this.items = items;
 		this.desc = desc;
+		this.message = message;
 	}
 
 	public String getId() {
@@ -28,14 +30,26 @@ public class RuleGroup {
 		return desc;
 	}
 
+	public String getMessage() {
+		return message;
+	}
+
 	public boolean check(XCO xco) {
+
+		boolean result = false;
+
 		for (RuleGroupItem item : this.items) {
-			boolean result = item.check(xco);
+			result = item.check(xco);
 			if (!result) {
-				return false;
+				break;
 			}
 		}
-		return true;
+
+		if (!result && Container.onValidateFailedThrowException) {
+			throw new XCOValidateException(Container.errorCode, (null != this.message) ? this.message : Container.errorMessage);
+		}
+
+		return result;
 	}
 
 }

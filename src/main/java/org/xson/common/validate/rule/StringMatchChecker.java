@@ -18,7 +18,8 @@ public class StringMatchChecker implements Checker {
 	}
 
 	public static Object parseValue(String value) {
-		return Pattern.compile(value.trim());
+		// return Pattern.compile(value.trim());
+		return Pattern.compile(value.trim().replaceAll("\\\\\\\\", "\\\\"));
 	}
 
 }

@@ -2,24 +2,25 @@ package org.xson.common.validate;
 
 public enum RuleEnum {
 
+	// 1.
 	ENUM("枚举值"),
-	//
+	// 2.
 	INTERVAL("区间值"),
-	//
+	// 3.
 	FILTER("过滤"),
-	//
+	// 4.
 	MAX_LENGTH("最大长度"),
-	//
-	MIN_LENGTH("最小长度"), 
-	//
+	// 5.
+	MIN_LENGTH("最小长度"),
+	// 6.
 	INTERVAL_LENGTH("区间长度"),
-	//
+	// 7.
 	MATCH("匹配"),
-	//
+	// 8.
 	MISMATCH("不匹配"),
-	//
+	// 9.
 	MIN("最小值"),
-	//
+	// 10.
 	MAX("最大值");
 
 	private String	value;

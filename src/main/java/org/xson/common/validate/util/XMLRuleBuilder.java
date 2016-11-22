@@ -202,16 +202,16 @@ public class XMLRuleBuilder {
 				// }
 
 				String itemMessage = StringUtils.trim(itemNode.getStringAttribute("message"));
-				if (null == itemMessage) {
-					itemMessage = groupMessage;
-				}
+				// if (null == itemMessage) {
+				// itemMessage = groupMessage;
+				// }
 
 				String defaultValue = StringUtils.trim(itemNode.getStringAttribute("defaultValue"));
 				String itemDesc = StringUtils.trim(itemNode.getStringAttribute("desc"));
 				RuleGroupItem ruleGroupItem = new RuleGroupItem(fieldName, fieldType, ruleList, require, itemMessage, defaultValue, itemDesc);
 				ruleGroupItemList.add(ruleGroupItem);
 			}
-			RuleGroup ruleGroup = new RuleGroup(id, ruleGroupItemList, desc);
+			RuleGroup ruleGroup = new RuleGroup(id, ruleGroupItemList, desc, groupMessage);
 			addRuleGroup(ruleGroup);
 		}
 	}

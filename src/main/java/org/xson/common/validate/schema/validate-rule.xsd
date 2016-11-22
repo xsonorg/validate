@@ -18,7 +18,7 @@
 			<xs:sequence>
 				<xs:element ref="rule" maxOccurs="unbounded"/>
 			</xs:sequence>
-			<xs:attribute name="id"/>
+			<xs:attribute name="id" type="xs:string" use="required"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="ruleGroup">
@@ -28,6 +28,7 @@
 			</xs:sequence>
 			<xs:attribute name="id" type="xs:string" use="required"/>
 			<xs:attribute name="message" type="xs:string"/>
+			<xs:attribute name="desc" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="rule">
@@ -48,7 +49,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
-			<xs:attribute name="value" type="xs:string" use="required"/>
+			<xs:attribute name="value" type="xs:string" use="optional"/>
 			<xs:attribute name="checker" type="xs:string" use="optional"/>
 		</xs:complexType>
 	</xs:element>
@@ -79,7 +80,7 @@
 			<xs:attribute name="require" type="xs:boolean"/>
 			<xs:attribute name="ref" type="xs:string"/>
 			<xs:attribute name="message" type="xs:string"/>
-			<xs:attribute name="c" type="xs:string"/>
+			<xs:attribute name="desc" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 </xs:schema>
